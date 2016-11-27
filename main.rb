@@ -13,7 +13,7 @@ loop do
   if player.bank.zero?
     puts 'You lose all bank!'.red
     break
-  elsif dealer.zero?
+  elsif dealer.bank.zero?
     puts 'You win all bank of dealer!'.green
     break
   end
