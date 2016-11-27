@@ -1,7 +1,7 @@
 class Player
   attr_reader :name, :bank
 
-  def initialize(name = "Dealer")
+  def initialize(name = 'Dealer')
     @name = name
     @bank = 100
   end

@@ -7,7 +7,7 @@ class Card
 
   def points
     return 11 if @face == 'A'
-    return 10 if ['K', 'Q', 'J'].include?(@face)
+    return 10 if %w(K Q J).include?(@face)
     @face
   end
 
