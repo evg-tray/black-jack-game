@@ -2,12 +2,7 @@ require_relative '../core_ext/string/colorize'
 require_relative 'card'
 
 class CardsDeck
-  SUITS = [
-    "\u2665".encode('utf-8').red,
-    "\u2666".encode('utf-8').red,
-    "\u2663".encode('utf-8'),
-    "\u2660".encode('utf-8')
-  ].freeze
+  SUITS = ["\u2665".red, "\u2666".red, "\u2663", "\u2660"].freeze
   FACES = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'A', 'K', 'Q', 'J'].freeze
 
   def initialize
@@ -16,18 +11,16 @@ class CardsDeck
   end
 
   def take_a_card
-    @deck.shift
+    @deck.pop
   end
 
   def self.standart_deck
-    if @standart_deck.nil?
-      @standart_deck = []
+    @standart_deck ||= begin
+      deck = []
       SUITS.each do |suit|
-        FACES.each do |face|
-          @standart_deck << Card.new(face, suit)
-        end
+        FACES.each { |face| deck << Card.new(face, suit) }
       end
+      deck
     end
-    @standart_deck
   end
 end
