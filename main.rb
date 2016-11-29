@@ -18,8 +18,8 @@ loop do
     break
   end
   puts "Your bank: $#{player.bank}, dealer bank: $#{dealer.bank}".cyan
-  GameSet.new(player, dealer)
+  GameSet.new(player, dealer).start_set
   puts 'Game end. Start new? (y/Y-yes, anykey-no)'.red
   command = gets.chomp
-  break unless command == 'y' || command == 'Y'
+  break unless command.downcase == 'y'
 end

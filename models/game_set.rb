@@ -14,25 +14,15 @@ class GameSet
     @deck = CardsDeck.new
     @human_hand = Hand.new
     @dealer_hand = Hand.new
-    take_start_cards
-    print_info
-    start_set
-  end
-
-  private
-
-  def print_info(show_dealer = false)
-    puts "Dealer: #{@dealer_hand.cards(show_dealer)}," \
-      " Points: #{show_dealer ? @dealer_hand.points : '**'}"
-    puts "You: #{@human_hand.cards(true)} Points: #{@human_hand.points}"
   end
 
   def start_set
-    human_points = @human_hand.points
-    dealer_points = @dealer_hand.points
-    if human_points == 21
+    take_start_cards
+    print_info
+
+    if @human_hand.points == 21
       puts 'You have the Black Jack!'.green
-      if dealer_points == 21
+      if @dealer_hand.points == 21
         puts 'Dealer have the Black Jack!'.green
       else
         dealer_turn
@@ -43,6 +33,14 @@ class GameSet
     end
   end
 
+  private
+
+  def print_info(show_dealer = false)
+    puts "Dealer: #{@dealer_hand.cards(show_dealer)}," \
+      " Points: #{show_dealer ? @dealer_hand.points : '**'}"
+    puts "You: #{@human_hand.cards(:visible)} Points: #{@human_hand.points}"
+  end
+
   def human_turn
     puts 'Your turn:'.green
     puts '1. Check'
@@ -51,18 +49,16 @@ class GameSet
       command = gets.chomp.to_i
       case command
       when 1
-        dealer_turn
-        result
         break
       when 2
         @human_hand.add_card(@deck.take_a_card)
-        dealer_turn
-        result
         break
       else
         puts 'Error, enter again:'.red
       end
     end
+    dealer_turn
+    result
   end
 
   def dealer_turn
@@ -70,39 +66,21 @@ class GameSet
   end
 
   def result
-    print_info(true)
+    print_info(:show_dealer)
     human_points = @human_hand.points
     dealer_points = @dealer_hand.points
-    if human_points == @dealer_hand.points
+    if human_points == dealer_points
       puts 'Draw!'
       @human.add_cash(@bank / 2)
-      @deaker.add_cash(@bank / 2)
+      @dealer.add_cash(@bank / 2)
     elsif human_points == 21
       human_win
     elsif dealer_points == 21
       dealer_win
-    elsif human_points < 21 || dealer_points < 21
-
-      if human_points < 21 && dealer_points < 21
-
-        if human_points > dealer_points
-          human_win
-        else
-          dealer_win
-        end
-
-      elsif human_points < 21 && dealer_points > 21
-        human_win
-      else
-        dealer_win
-      end
-
+    elsif human_points < 21 && dealer_points < 21
+      human_points > dealer_points ? human_win : dealer_win
     else
-      if human_points < dealer_points
-        human_win
-      else
-        dealer_win
-      end
+      human_points > dealer_points ? dealer_win : human_win
     end
   end
 
